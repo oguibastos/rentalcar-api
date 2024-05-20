@@ -2,8 +2,8 @@ package com.rentalcar.crud.rentalcarapi.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import java.time.LocalDate;
 
-import java.time.LocalTime;
 
 @Data
 @Entity(name = "ChecklistItem")
@@ -18,9 +18,9 @@ public class ChecklistItemEntity extends BaseEntity{
 
     private Boolean isComplete;
 
-    private LocalTime deadline;
+    private LocalDate deadline;
 
-    private LocalTime postedDate;
+    private LocalDate postedDate;
 
     @ManyToOne
     private CategoryEntity category;
