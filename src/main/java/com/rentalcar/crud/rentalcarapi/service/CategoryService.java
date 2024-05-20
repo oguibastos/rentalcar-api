@@ -1,13 +1,17 @@
 package com.rentalcar.crud.rentalcarapi.service;
 
 import com.rentalcar.crud.rentalcarapi.entity.CategoryEntity;
+import com.rentalcar.crud.rentalcarapi.entity.ChecklistItemEntity;
+import com.rentalcar.crud.rentalcarapi.exception.CategoryServiceException;
 import com.rentalcar.crud.rentalcarapi.exception.ResourceNotFoundException;
 import com.rentalcar.crud.rentalcarapi.repository.CategoryRepository;
 import com.rentalcar.crud.rentalcarapi.repository.ChecklistItemRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -52,5 +56,43 @@ public class CategoryService {
         log.debug("Updating category [ guid = {}, newName = {} ]", guid, name);
 
         return this.categoryRepository.save(retrievedCategory);
+    }
+
+    public void deleteCategory(String guid) {
+
+        if(!StringUtils.hasText(guid)) {
+            throw new IllegalArgumentException("Category guid be empty or null");
+        }
+
+        CategoryEntity retrievedCategory = this.categoryRepository.findByGuid(guid).orElseThrow(
+                () -> new ResourceNotFoundException("Category not found.")
+        );
+
+
+        //Verifica se a Categoria passada está sendo utilizada por alguma checklist
+        List<ChecklistItemEntity> checklistItems = this.checklistItemRepository.findByCategoryGuid(guid);
+        if(!CollectionUtils.isEmpty(checklistItems)) {
+            throw new CategoryServiceException("It is not possible to delete given category as it has been used by checklist items");
+        }
+
+        log.debug("Deleting category [ guid = {} ]", guid);
+
+        this.categoryRepository.delete(retrievedCategory);
+    }
+
+    public Iterable<CategoryEntity> findAllCategories() {
+
+        return this.categoryRepository.findAll();
+    }
+
+    public CategoryEntity findCategoryByGuid(String guid) {
+
+        if(!StringUtils.hasText(guid)) {
+            throw new IllegalArgumentException("Category guid be empty or null");
+        }
+
+        return this.categoryRepository.findByGuid(guid).orElseThrow(
+                () -> new ResourceNotFoundException("Category not found.")
+        );
     }
 }
