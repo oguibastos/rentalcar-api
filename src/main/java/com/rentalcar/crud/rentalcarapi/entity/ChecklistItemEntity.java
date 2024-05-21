@@ -16,7 +16,7 @@ public class ChecklistItemEntity extends BaseEntity{
 
     private String description;
 
-    private Boolean isComplete;
+    private Boolean isCompleted;
 
     private LocalDate deadline;
 

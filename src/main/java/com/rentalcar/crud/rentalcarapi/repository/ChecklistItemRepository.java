@@ -15,7 +15,7 @@ public interface ChecklistItemRepository extends PagingAndSortingRepository<Chec
     //No optional, se existir o "objeto" procurado, ele retorna o mesmo.
     Optional<ChecklistItemEntity> findByGuid(String guid);
 
-    Optional<ChecklistItemEntity> findByDescriptionAndIsComplete(String description, Boolean isComplete);
+    Optional<ChecklistItemEntity> findByDescriptionAndIsCompleted(String description, Boolean isCompleted);
 
     List<ChecklistItemEntity> findByCategoryGuid(String guid);
 }
