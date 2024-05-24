@@ -25,9 +25,7 @@ public class ChecklistItemController {
 
     @GetMapping(value="", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<ChecklistItemDTO>> getAllChecklistItems() {
-
-
-
+        
         List<ChecklistItemDTO> resp = StreamSupport.stream(this.checklistItemService.findAllChecklistItems().spliterator(), false)
                         .map(ChecklistItemEntity -> ChecklistItemDTO.toDTO(ChecklistItemEntity))
                         .collect(Collectors.toList());
@@ -37,10 +35,6 @@ public class ChecklistItemController {
 
     @PostMapping(value="", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> createNewChecklistItem(@RequestBody ChecklistItemDTO checklistItemDTO) {
-
-        if(checklistItemDTO.getCategory() == null) {
-            throw new ValidationException("Category cannot null");
-        }
 
         ChecklistItemEntity newChecklistItem = this.checklistItemService.addNewChecklistItem(
                 checklistItemDTO.getDescription(), checklistItemDTO.getIsCompleted(),
@@ -52,8 +46,8 @@ public class ChecklistItemController {
     @PutMapping(value="", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> updateChecklistItem(@RequestBody ChecklistItemDTO checklistItemDTO) {
 
-        if(!StringUtils.hasLength(checklistItemDTO.getGuid())) {
-            throw new ValidationException("Checklist item guid is mandatory");
+        if(!StringUtils.hasText(checklistItemDTO.getGuid())) {
+            throw new ValidationException("Checklist item cannot be null or empty");
         }
 
         this.checklistItemService.updateChecklistItem(checklistItemDTO.getGuid(),
