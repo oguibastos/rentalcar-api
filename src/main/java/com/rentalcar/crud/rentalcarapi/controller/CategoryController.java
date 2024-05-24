@@ -14,7 +14,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-@RequestMapping("/api/v1/categories")
+@RestController
+@RequestMapping("/v1/api/categories")
 public class CategoryController {
 
     private CategoryService categoryService;

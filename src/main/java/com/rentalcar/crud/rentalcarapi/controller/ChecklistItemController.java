@@ -14,7 +14,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-@RestController("/api/v1/checklist-items")
+@RestController
+@RequestMapping("/v1/api/checklist-items")
 public class ChecklistItemController {
 
     ChecklistItemService checklistItemService;
@@ -25,7 +26,7 @@ public class ChecklistItemController {
 
     @GetMapping(value="", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<ChecklistItemDTO>> getAllChecklistItems() {
-        
+
         List<ChecklistItemDTO> resp = StreamSupport.stream(this.checklistItemService.findAllChecklistItems().spliterator(), false)
                         .map(ChecklistItemEntity -> ChecklistItemDTO.toDTO(ChecklistItemEntity))
                         .collect(Collectors.toList());
