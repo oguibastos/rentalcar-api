@@ -3,6 +3,8 @@ package com.rentalcar.crud.rentalcarapi.controller;
 import com.rentalcar.crud.rentalcarapi.dto.ChecklistItemDTO;
 import com.rentalcar.crud.rentalcarapi.entity.ChecklistItemEntity;
 import com.rentalcar.crud.rentalcarapi.service.ChecklistItemService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +26,7 @@ public class ChecklistItemController {
         this.checklistItemService = checklistItemService;
     }
 
-    @GetMapping(value="", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value="/getall", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<ChecklistItemDTO>> getAllChecklistItems() {
 
         List<ChecklistItemDTO> resp = StreamSupport.stream(this.checklistItemService.findAllChecklistItems().spliterator(), false)
@@ -34,7 +36,7 @@ public class ChecklistItemController {
         return new ResponseEntity<>(resp, HttpStatus.OK);
     }
 
-    @PostMapping(value="", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value="/register", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> createNewChecklistItem(@RequestBody ChecklistItemDTO checklistItemDTO) {
 
         ChecklistItemEntity newChecklistItem = this.checklistItemService.addNewChecklistItem(
@@ -44,7 +46,7 @@ public class ChecklistItemController {
         return new ResponseEntity<>(newChecklistItem.getGuid(), HttpStatus.CREATED);
     }
 
-    @PutMapping(value="", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value="/update", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> updateChecklistItem(@RequestBody ChecklistItemDTO checklistItemDTO) {
 
         if(!StringUtils.hasText(checklistItemDTO.getGuid())) {

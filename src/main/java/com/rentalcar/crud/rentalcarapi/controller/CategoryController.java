@@ -24,7 +24,7 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
-    @GetMapping(value="", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value="/getall", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<CategoryDTO>> getAllCategories() {
 
         List<CategoryDTO> resp = StreamSupport.stream(this.categoryService
@@ -35,7 +35,7 @@ public class CategoryController {
         return new ResponseEntity<List<CategoryDTO>>(resp, HttpStatus.OK);
     }
 
-    @PostMapping(value="", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value="/register", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> addNewCategory(@RequestBody CategoryDTO categoryDTO) {
 
 
@@ -43,7 +43,7 @@ public class CategoryController {
         return new ResponseEntity<>(newCategory.getGuid(), HttpStatus.CREATED);
     }
 
-    @PutMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/update", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> updateCategory(@RequestBody CategoryDTO categoryDTO) {
 
         if(!StringUtils.hasText(categoryDTO.getGuid())) {
